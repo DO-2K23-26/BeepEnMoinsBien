@@ -1,0 +1,16 @@
+stages:
+  - deploy
+
+variables:
+  APP_NAME: beepenmoinsbien
+
+deploy:
+  image: ilyasemenov/gitlab-ci-git-push
+  stage: deploy
+  environment:
+    name: production
+    url: http://localhost:5000
+  only:
+    - main
+  script:
+    - git-push ssh://dokku@dokku.razano.dev:22/beepenmoinsbien
