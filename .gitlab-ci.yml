@@ -13,4 +13,4 @@ deploy:
   only:
     - main
   script:
-    - git-push ssh://dokku@dokku.razano.dev:22/beepenmoinsbien
+    - git-push ssh://dokku@162.38.112.145:22/beepenmoinsbien
