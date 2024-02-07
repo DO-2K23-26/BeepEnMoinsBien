@@ -6,7 +6,7 @@ deploy:
   stage: deploy
   environment:
     name: production
-    url: http://localhost:9643
+    url: https://beep.gay
   only:
     - main
   script:
