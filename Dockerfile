@@ -4,7 +4,7 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/engine/reference/builder/
 
-ARG NODE_VERSION=21.6.0
+ARG NODE_VERSION=21.6.1
 
 ################################################################################
 # Use node image for base image for all stages.
@@ -60,13 +60,11 @@ COPY package.json .
 # Copy the production dependencies from the deps stage and also
 # the built application from the build stage into the image.
 COPY --from=deps /usr/src/app/node_modules ./node_modules
-COPY --from=build --chown=nextjs:nodejs /usr/src/app/.next ./.next
-COPY --from=build /usr/src/app/package.json ./package.json
-COPY --from=build /usr/src/app/public ./public
+COPY --from=build /usr/src/app/build ./build
 
 
 # Expose the port that the application listens on.
 EXPOSE 9643
 
 # Run the application.
-CMD npm start
+CMD npm run prod
