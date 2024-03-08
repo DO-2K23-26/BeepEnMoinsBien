@@ -4,6 +4,7 @@ import "./../style/index.css";
 import { Mic, Phone } from "lucide-react";
 import { Settings } from "lucide-react";
 import Myprofil from "./Myprofil";
+import ChannelList from "./ChannelList";
 
 function Sidebar() {
   return (
@@ -16,17 +17,7 @@ function Sidebar() {
           </div>
 
           <div className="overflow-y-auto overflow-x-hidden flex-grow">
-            <ul className="flex flex-col py-4 space-y-1">
-              <li className="">
-                <div className="flex flex-row items-center px-5 h-8">
-                  <div className="text-sm font-light tracking-wide text-gray-500">
-                    Channels
-                  </div>
-                </div>
-              </li>
-              <Channel id="1" />
-              <Channel id="2" />
-            </ul>
+            <ChannelList />
           </div>
 
           <div className="mt-auto">
