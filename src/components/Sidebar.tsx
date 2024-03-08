@@ -1,8 +1,5 @@
 import React from "react";
-import Channel from "./Channel";
 import "./../style/index.css";
-import { Mic, Phone } from "lucide-react";
-import { Settings } from "lucide-react";
 import Myprofil from "./Myprofil";
 import ChannelList from "./ChannelList";
 

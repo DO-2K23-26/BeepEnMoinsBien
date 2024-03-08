@@ -1,7 +1,4 @@
-import { Component } from "react";
-import React, { useState } from "react";
 import "./../style/index.css";
-import { Hash, Settings } from "lucide-react";
 import Channel from "./Channel";
 
 function ChannelList() {

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import "./../style/index.css";
 import { Settings, Mic, Phone } from "lucide-react";
 
