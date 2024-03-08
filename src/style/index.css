@@ -26,3 +26,10 @@ code {
   background: rgb(207, 191, 224);
   border-radius: 10px;
 }
+
+@keyframes swing {
+  0% { transform: rotate(0deg) scale(1); }
+  33% { transform: rotate(25deg) scale(1.5); }
+  66% { transform: rotate(-25deg) scale(1.5); }
+  100% { transform: rotate(0deg) scale(1.5); }
+}

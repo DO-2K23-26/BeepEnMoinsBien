@@ -7,7 +7,7 @@ interface SettingsChannelProps {
 
 const SettingsChannel: React.FC<SettingsChannelProps> = ({ onClose }) => {
   return (
-    <div className="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center">
+    <div className="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center ">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg h-auto w-full relative">
         <button onClick={onClose} className="absolute top-2 right-2">
           <X size={24} />

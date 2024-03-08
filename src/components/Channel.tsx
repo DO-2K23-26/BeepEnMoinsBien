@@ -23,9 +23,9 @@ function Channel(props: { id: string }) {
         </a>
         <button
           onClick={() => setShowSettings(true)}
-          className="ml-auto inline-flex justify-center items-center"
-        >
-          <span className="">
+          className="ml-auto inline-flex justify-center items-center transform transition-transform duration-500 hover:rotate-90 hover:scale-110"
+          >
+          <span className=" ">
             <Settings color="black" size={20} />
           </span>
         </button>
