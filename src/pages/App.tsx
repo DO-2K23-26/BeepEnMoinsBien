@@ -1,7 +1,6 @@
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import LoginComponent from '../components/LoginComponant';
 import RegisterComponent from '../components/RegisterComposant';
-import Sidebar from '../components/Sidebar';
 import { ApiProvider } from '../context/envar';
 
 function App() {
@@ -14,7 +13,7 @@ function App() {
       <Routes>
         {/* Si le token existe dans le localStorage, affichez la Sidebar */}
         {isAuth ? (
-          <Route path="/" element={<Sidebar />} />
+          <Route path="/" element={<Main />} />
         ) : (
           // Si le token n'existe pas, redirigez l'utilisateur vers la page de connexion
           <Route path="/" element={<Navigate to="/login" />} />
