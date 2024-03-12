@@ -1,7 +1,6 @@
 import React from 'react';
 
-class ChatBox extends React.Component {
-  render() {
+function ChatBox() {
     return (
       <div className="chat-container flex flex-col h-screen w-full border border-black">
         <div className="chat-header p-2 ">
@@ -27,7 +26,6 @@ class ChatBox extends React.Component {
         </div>
       </div>
     );
-  }
 }
 
 export default ChatBox;
