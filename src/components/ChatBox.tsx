@@ -1,13 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { Socket, io } from 'socket.io-client';
+import env from "react-dotenv";
 
 function ChatBox() {
   const socket = useRef(null as unknown as Socket);
 
   useEffect(() => {
-    socket.current = io("http://localhost:3001");
-    socket.current.on("connect", () => {
-      console.log("Connected to server");
+    socket.current = io(env.SOCKET_URL ?? 'http://localhost:4000');
+    socket.current.on("chat", (message) => {
+      console.log(message);
     });}
     , []
   );
@@ -19,6 +20,7 @@ function ChatBox() {
       author: "User1",
       roomName: "channel1"
     };
+    console.log(payload);
     socket.current.emit("chat", payload);
   };
   
