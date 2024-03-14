@@ -7,7 +7,7 @@ function ChatBox() {
   const socket = useRef(null as unknown as Socket);
 
   useEffect(() => {
-    socket.current = io(env.SOCKET_URL ?? 'http://localhost:4000');
+    socket.current = io(env.SOCKET_URL ?? 'http://api.beep.gay:4000');
     socket.current.on("chat", (message) => {
       console.log(message);
     });}
