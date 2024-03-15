@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import LoginComponent from '../components/LoginComponant';
+import RegisterComponent from '../components/RegisterComposant';
 
 function App() {
   const token = localStorage.getItem('accessToken');
@@ -19,7 +20,10 @@ function App() {
         )}
         {/* Toujours afficher la page de connexion */}
         <Route path="/login" element={<LoginComponent />} />
+        <Route path="/register" element={<RegisterComponent/>} />
+        <Route path="/viewProfil" element={<div>Profil</div>} />
       </Routes>
+      
     </Router>
   );
 }
