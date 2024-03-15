@@ -7,6 +7,10 @@ function App() {
   const token = localStorage.getItem('accessToken');
   const isAuth = token ? true : false;
   
+  const [socketValue, setSocketValue] = useState<Socket | null>(io(env.SOCKET_URL ?? 'http://api.beep.gay:4000', { auth: { token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikphem15bl9Sb2JlcnRzMjNAZ21haWwuY29tIiwiaWF0IjoxNzEwNTAwNDI3LCJleHAiOjE3MTA1MDA3Mjd9.EJT7R-eBSEpwN2pc0BseytK_ol4_0bFuw6RtdGWxR3U" } }));
+
+  const providerValue = useMemo(() => ({ socketValue, setSocketValue }), [socketValue, setSocketValue]);
+
   return (
     <Router>
       <ApiProvider>
@@ -29,4 +33,4 @@ function App() {
   );
 }
 
-export default App;
+export { SocketContext, App };

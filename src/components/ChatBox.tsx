@@ -1,29 +1,30 @@
-import React, { useEffect, useRef } from 'react';
-import { Socket, io } from 'socket.io-client';
-import env from "react-dotenv";
+import React, { useContext, useEffect, useRef } from 'react';
 import { SendHorizonal, Plus } from "lucide-react";
 import Message from './Message';
+import { SocketContext } from '../pages/App';
 
 function ChatBox() {
-  const socket = useRef(null as unknown as Socket);
+  const socket = useRef(useContext(SocketContext)?.socketValue);
+  const setSocketValue = useContext(SocketContext)?.setSocketValue;
 
   useEffect(() => {
-    socket.current = io(env.SOCKET_URL ?? 'http://api.beep.gay:4000');
-    socket.current.on("chat", (message) => {
+    if (setSocketValue && socket) {
+      socket.current?.on("chat", (message) => {
       console.log(message);
-    });}
-    , []
-  );
+      });
+    }
+  }, [setSocketValue, socket]);
 
   const handleClick = () => {
     const payload = {
-      message: document.querySelector("input")?.value,
+      contenu: document.querySelector("input")?.value,
       timestamp: new Date().getTime(),
-      author: "User1",
-      roomName: "channel1"
+      author: "Jazmyn_Roberts23@gmail.com",
+      groupe: "channel1"
     };
-    console.log(payload);
-    socket.current.emit("chat", payload);
+    if (socket) {
+      socket.current?.emit("chat", payload);
+    }
   };
   
     return (
