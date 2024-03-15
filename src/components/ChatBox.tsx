@@ -8,19 +8,23 @@ function ChatBox() {
   const setSocketValue = useContext(SocketContext)?.setSocketValue;
 
   useEffect(() => {
+    const socketConst = socket;
     if (setSocketValue && socket) {
-      socket.current?.on("chat", (message) => {
+      socketConst.current?.on("chat", (message) => {
       console.log(message);
       });
     }
-  }, []);
+    return () => {
+      if (socket) {
+        socketConst.current?.off("chat");
+      }
+    }
+  }, [setSocketValue, socket]);
 
   const handleClick = () => {
     const payload = {
       contenu: document.querySelector("input")?.value,
       timestamp: new Date().getTime(),
-      author: "dodo@gmail.com",
-      groupe: "channel1"
     };
     if (socket) {
       socket.current?.emit("chat", payload);
