@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import env from 'react-dotenv';
+import { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { api_url } from '../context/envar';
 
 const LoginComponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const url = useContext(api_url);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(env.API_URL + '/auth/login', { email, password });
+      const response = await axios.post(url + '/auth/login', { email, password });
       localStorage.setItem('accessToken', response.data.accessToken);
       localStorage.setItem('refreshToken', response.data.refreshToken);
       await navigate('/');

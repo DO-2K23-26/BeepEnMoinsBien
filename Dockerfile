@@ -41,7 +41,7 @@ FROM deps as build
 # Copy the rest of the source files into the image.
 COPY . .
 # Run the build script.
-RUN touch ./public/env.js chown node:node && npm run build
+RUN npm run build
 
 ################################################################################
 # Create a new stage to run the application with minimal runtime dependencies

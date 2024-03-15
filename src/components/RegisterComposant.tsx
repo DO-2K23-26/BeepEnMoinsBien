@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import env from 'react-dotenv';
 import axios from 'axios';
+import { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { api_url } from '../context/envar';
 import './../style/LoginComponent.css'; // Assurez-vous d'importer le même style que LoginComponent
 
 const RegisterComponent = () => {
@@ -9,11 +9,12 @@ const RegisterComponent = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const url = useContext(api_url);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(env.API_URL + '/user', { email, password });
+      const response = await axios.post(url + '/user', { email, password });
       console.log('Réponse du serveur:', response.data);
       // Redirection vers une autre page après une inscription réussie
       navigate('/login');

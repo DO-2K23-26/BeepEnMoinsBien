@@ -1,8 +1,8 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import LoginComponent from '../components/LoginComponant';
 import RegisterComponent from '../components/RegisterComposant';
+import Sidebar from '../components/Sidebar';
+import { ApiProvider } from '../context/envar';
 
 function App() {
   const token = localStorage.getItem('accessToken');
@@ -10,6 +10,7 @@ function App() {
   
   return (
     <Router>
+      <ApiProvider>
       <Routes>
         {/* Si le token existe dans le localStorage, affichez la Sidebar */}
         {isAuth ? (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/register" element={<RegisterComponent/>} />
         <Route path="/viewProfil" element={<div>Profil</div>} />
       </Routes>
+      </ApiProvider>
       
     </Router>
   );
