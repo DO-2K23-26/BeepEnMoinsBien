@@ -13,19 +13,25 @@ function ChatBox() {
       console.log(message);
       });
     }
-  }, [setSocketValue, socket]);
+  }, []);
 
   const handleClick = () => {
     const payload = {
       contenu: document.querySelector("input")?.value,
       timestamp: new Date().getTime(),
-      author: "Jazmyn_Roberts23@gmail.com",
+      author: "dodo@gmail.com",
       groupe: "channel1"
     };
     if (socket) {
       socket.current?.emit("chat", payload);
     }
   };
+
+  const handleJoin = () => {
+    if (socket) {
+      socket.current?.emit("join_room", "channel1");
+    }
+  }
   
     return (
       <div className="chat-container flex flex-col h-screen  bg-violet-200 w-full">
@@ -45,7 +51,7 @@ function ChatBox() {
           <button className="mr-7 bg-white rounded-lg p-4" onClick={handleClick}>
             <SendHorizonal size={20} />
           </button>
-          <button className="mr-2 bg-white rounded-lg p-4">
+          <button className="mr-2 bg-white rounded-lg p-4" onClick={handleJoin}>
             <Plus size={20} />
           </button>
         </div>
