@@ -1,12 +1,36 @@
 stages:
+  - build
+  - store
   - deploy
 
-deploy:
+variables:
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+Buid image:
+  tags:
+    - shell
+  stage: build
+  script:
+    - docker build -t $IMAGE_TAG .
+
+Store image:
+  tags:
+    - shell
+  stage: store
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $IMAGE_TAG
+  only:
+    - main
+
+Deploy to dokku:
+  tags:
+    - docker
   image: ilyasemenov/gitlab-ci-git-push
   stage: deploy
   environment:
     name: production
-    url: https://beep.gay
+    url: http://localhost:9644
   only:
     - main
   script:
