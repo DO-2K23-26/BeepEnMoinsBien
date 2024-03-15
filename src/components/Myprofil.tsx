@@ -8,10 +8,6 @@ function Myprofil() {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    setShowModal(true);
-  };
-
   const handleCloseModal = () => {
     setShowModal(false);
   };
