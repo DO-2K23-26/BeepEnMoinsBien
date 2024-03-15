@@ -2,14 +2,11 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import LoginComponent from '../components/LoginComponant';
 import RegisterComponent from '../components/RegisterComposant';
 import { ApiProvider } from '../context/envar';
+import Main from './Main';
 
 function App() {
   const token = localStorage.getItem('accessToken');
   const isAuth = !!token;
-  
-  const [socketValue, setSocketValue] = useState<Socket | null>(io('https://api.beep.gay', { auth: { token: "//TODO TOKEN HERE" } }));
-
-  const providerValue = useMemo(() => ({ socketValue, setSocketValue }), [socketValue, setSocketValue]);
 
   return (
     <Router>
@@ -33,4 +30,4 @@ function App() {
   );
 }
 
-export { SocketContext, App };
+export { App };
