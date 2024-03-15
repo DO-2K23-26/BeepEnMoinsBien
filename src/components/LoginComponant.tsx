@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import './../style/LoginComponent.css'
+import env from 'react-dotenv';
 
 const LoginComponent = () => {
   const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ const LoginComponent = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:9644/auth/login', { email, password });
+      const response = await axios.post(env.API_URL+'/auth/login', { email, password });
       localStorage.setItem('accessToken', response.data.accessToken);
       localStorage.setItem('refreshToken', response.data.refreshToken);
       await navigate('/');
