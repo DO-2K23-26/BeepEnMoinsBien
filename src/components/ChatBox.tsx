@@ -27,6 +27,7 @@ function ChatBox() {
       timestamp: new Date().getTime(),
     };
     if (socket) {
+
       socket.current?.emit("chat", payload);
     }
   };
