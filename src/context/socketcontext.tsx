@@ -9,7 +9,7 @@ export const SocketContext = createContext<{
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     const url = useContext(api_url);
-    const [socketValue, setSocketValue] = useState(io(url));
+    const [socketValue, setSocketValue] = useState(io(url, { auth: { token: localStorage.getItem('accessToken') } }));
     const value = useMemo(() => ({ socketValue, setSocketValue }), [socketValue]);
     
     return (

@@ -7,6 +7,7 @@ import './../style/LoginComponent.css'; // Assurez-vous d'importer le même styl
 const RegisterComponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [pseudo, setPseudo] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const url = useContext(api_url);
@@ -14,7 +15,7 @@ const RegisterComponent = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(url + '/user', { email, password });
+      const response = await axios.post(url + '/user', { email, nickname: pseudo, password });
       console.log('Réponse du serveur:', response.data);
       // Redirection vers une autre page après une inscription réussie
       navigate('/login');
@@ -35,6 +36,15 @@ const RegisterComponent = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-2 rounded border border-gray-300 focus:outline-none focus:border-slate-900"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1">Pseudo:</label>
+            <input
+              type="text"
+              value={pseudo}
+              onChange={(e) => setPseudo(e.target.value)}
               className="w-full p-2 rounded border border-gray-300 focus:outline-none focus:border-slate-900"
             />
           </div>

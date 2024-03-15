@@ -2,6 +2,7 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import LoginComponent from '../components/LoginComponant';
 import RegisterComponent from '../components/RegisterComposant';
 import { ApiProvider } from '../context/envar';
+import { SocketProvider } from '../context/socketcontext';
 import Main from './Main';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
   return (
     <Router>
       <ApiProvider>
+      <SocketProvider>
       <Routes>
         {/* Si le token existe dans le localStorage, affichez la Sidebar */}
         {isAuth ? (
@@ -24,6 +26,7 @@ function App() {
         <Route path="/register" element={<RegisterComponent/>} />
         <Route path="/viewProfil" element={<div>Profil</div>} />
       </Routes>
+      </SocketProvider>
       </ApiProvider>
       
     </Router>
