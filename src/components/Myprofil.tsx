@@ -1,7 +1,27 @@
+
+import { Mic, Phone, Settings, User } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "./../style/index.css";
-import { Settings, Mic, Phone, User } from "lucide-react";
 
 function Myprofil() {
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    navigate("/login");
+  }
+
   return (
     <div>
       <ul className="flex flex-col py-4 space-y-1 ml-3">
@@ -35,7 +55,10 @@ function Myprofil() {
                 href="#settings"
                 className="ml-auto inline-flex justify-center items-center"
               >
-                <span className="ml-auto inline-flex justify-center items-center transform transition-transform duration-500 hover:rotate-90 hover:scale-150">
+                <span
+                  className="ml-auto inline-flex justify-center items-center transform transition-transform duration-500 hover:rotate-90 hover:scale-150"
+                  onClick={() => setShowModal(!showModal)}
+                >
                   <Settings color="black" size={20} />
                 </span>
               </a>
@@ -43,6 +66,28 @@ function Myprofil() {
           </div>
         </li>
       </ul>
+
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-white p-4 rounded-lg border">
+            <h2 className="text-lg font-medium mb-2">User Info</h2>
+            <p>Name: Thomas</p>
+            <p>Status: En ligne</p>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+              onClick={handleCloseModal}
+            >
+              Close
+            </button>
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded mt-4 ml-4"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
