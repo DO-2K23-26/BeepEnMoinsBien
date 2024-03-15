@@ -16,7 +16,7 @@ const LoginComponent = () => {
       const response = await axios.post(url + '/auth/login', { email, password });
       localStorage.setItem('accessToken', response.data.accessToken);
       localStorage.setItem('refreshToken', response.data.refreshToken);
-      await navigate('/');
+      navigate('/');
     } catch (error) {
       console.error('Erreur lors de l\'authentification:', error);
       setError('Identifiant ou mot de passe incorrect');

@@ -5,7 +5,7 @@ import { ApiProvider } from '../context/envar';
 
 function App() {
   const token = localStorage.getItem('accessToken');
-  const isAuth = token ? true : false;
+  const isAuth = !!token;
   
   const [socketValue, setSocketValue] = useState<Socket | null>(io('https://api.beep.gay', { auth: { token: "//TODO TOKEN HERE" } }));
 

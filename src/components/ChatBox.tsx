@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { SendHorizonal, Plus } from "lucide-react";
 import Message from './Message';
 import { SocketContext } from '../pages/App';
