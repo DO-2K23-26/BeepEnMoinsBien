@@ -11,7 +11,6 @@ const LoginComponent = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(env.API_URL + '/auth/login');
     try {
       const response = await axios.post(env.API_URL + '/auth/login', { email, password });
       localStorage.setItem('accessToken', response.data.accessToken);
@@ -26,7 +25,7 @@ const LoginComponent = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="bg-purple-200 p-8 rounded-lg w-80 mx-auto">
-        <h2 className="text-lg font-bold mb-4">Connexion - {process.env.API_URL}</h2>
+        <h2 className="text-lg font-bold mb-4">Connexion</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block mb-1">Email:</label>

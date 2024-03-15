@@ -13,7 +13,7 @@ const RegisterComponent = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(env.REACT_APP_API_URL + '/user', { email, password });
+      const response = await axios.post(env.API_URL + '/user', { email, password });
       console.log('Réponse du serveur:', response.data);
       // Redirection vers une autre page après une inscription réussie
       navigate('/login');
