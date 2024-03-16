@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { SendHorizonal, Plus } from "lucide-react";
 import Message from './Message';
 import { SocketContext } from '../context/socketcontext';
@@ -6,25 +6,23 @@ import { SocketContext } from '../context/socketcontext';
 function ChatBox() {
    const socketContext = useContext(SocketContext);
    const socket = useRef(socketContext?.socketValue);
-   const setSocketValue = socketContext?.setSocketValue;
+   const [messages, setMessages] = useState([{message: "Hello", author: "User1"}]);
 
   useEffect(() => {
     socket.current = socketContext?.socketValue;
-  }, [socketContext?.socketValue]);
 
-  useEffect(() => {
-    const socketConst = socket;
-    if (socketConst?.current) {
-      socketConst.current?.on("chat", (message) => {
-      console.log(message);
+    if (socket.current) {
+      console.log("socket is connected");
+      socket.current.on("chat", (msg: any) => {
+        setMessages((prev) => [...prev, {message: msg.contenu, author: msg.author}]);
       });
     }
+
     return () => {
-      if (socketConst?.current) {
-        socketConst.current?.off("chat");
-      }
-    }
-  }, [setSocketValue, socket]);
+      console.log("socket is disconnected");
+      socket.current?.off("chat");
+    };
+  }, [socketContext?.socketValue]);
 
   const handleClick = () => {
     const payload = {
@@ -48,7 +46,7 @@ function ChatBox() {
           <h2># Channel Name</h2>
         </div>
         <div className="chat-messages flex-grow overflow-y-auto p-2">
-          <Message message="Hello" author="User1" />
+          {messages.map((msg, index) => <Message key={index} message={msg.message} author={msg.author} />)}
 
         </div>
         <div className="chat-input flex items-center p-4 ">
