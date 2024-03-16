@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { api_url } from '../context/envar';
+import { api_url, authContext } from '../context/envar';
 
 const LoginComponent = () => {
   const [email, setEmail] = useState('');
@@ -9,14 +9,18 @@ const LoginComponent = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const url = useContext(api_url);
+  const auth = useContext(authContext);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(url + '/auth/login', { email, password });
-      localStorage.setItem('accessToken', response.data.accessToken);
-      localStorage.setItem('refreshToken', response.data.refreshToken);
-      navigate('/');
+        const response = await axios.post(url + '/auth/login', { email, password });
+        if (response.status === 200) {
+            localStorage.setItem('accessToken', response.data.accessToken);
+            localStorage.setItem('refreshToken', response.data.refreshToken);
+            auth.login();
+        }
+        navigate('/');
     } catch (error) {
       console.error('Erreur lors de l\'authentification:', error);
       setError('Identifiant ou mot de passe incorrect');

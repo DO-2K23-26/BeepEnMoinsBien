@@ -1,19 +1,18 @@
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import LoginComponent from '../components/LoginComponant';
 import RegisterComponent from '../components/RegisterComposant';
-import { ApiProvider } from '../context/envar';
+import { ApiProvider, authContext } from '../context/envar';
+import { SocketProvider } from '../context/socketcontext';
 import Main from './Main';
+import { useContext } from 'react';
 
 function App() {
-  const token = localStorage.getItem('accessToken');
-  const isAuth = !!token;
-
+  console.log(useContext(authContext).isAuthenticated);
   return (
     <Router>
       <ApiProvider>
       <Routes>
-        {/* Si le token existe dans le localStorage, affichez la Sidebar */}
-        {isAuth ? (
+        {useContext(authContext).isAuthenticated ? (
           <Route path="/" element={<Main />} />
         ) : (
           // Si le token n'existe pas, redirigez l'utilisateur vers la page de connexion

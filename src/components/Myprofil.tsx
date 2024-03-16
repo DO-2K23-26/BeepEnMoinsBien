@@ -1,20 +1,21 @@
 
 import { Mic, Phone, Settings, User } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./../style/index.css";
+import { authContext } from "../context/envar";
 
 function Myprofil() {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const auth = useContext(authContext);
 
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    auth.logout();
     navigate("/login");
   }
 
