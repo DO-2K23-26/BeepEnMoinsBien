@@ -1,8 +1,22 @@
+import axios from "axios";
 import "./../style/index.css";
 import Channel from "./Channel";
+import { api_url } from "../context/envar";
+import { useContext, useEffect, useState } from "react";
 
 function ChannelList() {
+  const url = useContext(api_url);
+  const [channels, setChannels] = useState([]);
 
+   useEffect(() => {
+     const fetchData = async () => {
+       const response = await axios.get(url + '/groupe');
+       setChannels(response.data);
+     };
+
+     fetchData();
+   }, [url]);
+   
   return (
     <ul className="flex flex-col py-4 space-y-1">
     <li className="">
@@ -12,8 +26,7 @@ function ChannelList() {
         </div>
       </div>
     </li>
-    <Channel id="1" />
-    <Channel id="2" />
+    {channels.map((channel: {id: number, nom: string}) => <Channel key={channel.id} id={channel.nom}/>)}
   </ul>
   );
 }
