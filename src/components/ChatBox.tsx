@@ -4,18 +4,23 @@ import Message from './Message';
 import { SocketContext } from '../context/socketcontext';
 
 function ChatBox() {
-  const socket = useRef(useContext(SocketContext)?.socketValue);
-  const setSocketValue = useContext(SocketContext)?.setSocketValue;
+   const socketContext = useContext(SocketContext);
+   const socket = useRef(socketContext?.socketValue);
+   const setSocketValue = socketContext?.setSocketValue;
+
+  useEffect(() => {
+    socket.current = socketContext?.socketValue;
+  }, [socketContext?.socketValue]);
 
   useEffect(() => {
     const socketConst = socket;
-    if (setSocketValue && socket) {
+    if (socketConst?.current) {
       socketConst.current?.on("chat", (message) => {
       console.log(message);
       });
     }
     return () => {
-      if (socket) {
+      if (socketConst?.current) {
         socketConst.current?.off("chat");
       }
     }
@@ -27,7 +32,6 @@ function ChatBox() {
       timestamp: new Date().getTime(),
     };
     if (socket) {
-
       socket.current?.emit("chat", payload);
     }
   };

@@ -13,8 +13,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         const socket = io(url, { auth: { token: localStorage.getItem('accessToken') } });
-        setSocketValue(socket);
-
+        socket.on('connect', () => {
+            setSocketValue(socket);
+        });
         return () => {
             socket.disconnect();
         };
