@@ -19,14 +19,14 @@ function Channel(props: Readonly<{ id: string }>) {
   return (
     <li>
       <div className="flex flex-row items-center h-11 focus:outline-none hover:bg-violet-200 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-black pr-6">
-        <a href="#channel1" className="flex items-center" onClick={handleClick}>
+        <button className="flex items-center" onClick={handleClick}>
           <span className="inline-flex justify-center items-center ml-4">
             <Hash color="black" size={20} />
           </span>
           <span className="ml-2 text-sm tracking-wide truncate">
             {props.id}
           </span>
-        </a>
+        </button>
         <button
           onClick={() => setShowSettings(true)}
           className="ml-auto inline-flex justify-center items-center transform transition-transform duration-500 hover:rotate-90 hover:scale-110"
