@@ -3,19 +3,20 @@ import { Mic, Phone, Settings, User } from "lucide-react";
 import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./../style/index.css";
-import { authContext } from "../context/envar";
+import { useUserContext } from '../context/authcontext'
 
 function Myprofil() {
+
+  const { logout } = useUserContext();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const auth = useContext(authContext);
 
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
   const handleLogout = () => {
-    auth.logout();
+    logout()
     navigate("/login");
   }
 

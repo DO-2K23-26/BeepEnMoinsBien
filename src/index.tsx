@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './style/index.css';
 import { App } from './pages/App';
 import reportWebVitals from './reportWebVitals';
+import UserContextProvider from './context/authcontext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App />
+    <UserContextProvider>
+      <App />
+    </UserContextProvider>
   </React.StrictMode>
 );
 
