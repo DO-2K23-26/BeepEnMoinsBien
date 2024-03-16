@@ -1,14 +1,6 @@
-import { createContext, useState } from 'react';
-type AuthContextType = {
-    isAuthenticated: boolean;
-    login: () => void;
-    logout: () => void;
-  };
+import { createContext } from 'react';
   
 export const api_url = createContext('');
-export const authContext = createContext<AuthContextType>({isAuthenticated: false,
-    login: () => {},
-    logout: () => {},});
 
 export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
     let url = '';
@@ -21,23 +13,3 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
         <api_url.Provider value={url}>{children}</api_url.Provider>
     );
 }
-
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    let [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('accessToken'));
-    
-    const login = () => {
-        isAuthenticated = true;
-    };
-
-    const logout = () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        setIsAuthenticated(false);
-    };
-
-    return (
-        <authContext.Provider value={{ isAuthenticated, login, logout }}>
-            {children}
-        </authContext.Provider>
-    );
-};
