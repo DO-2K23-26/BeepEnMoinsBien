@@ -2,9 +2,9 @@ import axios from 'axios';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api_url } from '../context/envar';
-import './../style/LoginComponent.css'; // Assurez-vous d'importer le même style que LoginComponent
 
 const RegisterComponent = () => {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [pseudo, setPseudo] = useState('');

@@ -1,34 +1,84 @@
-import { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
+interface User {
+  email: string;
+  nikname: string;
+}
 
-type AuthContextType = {
-  isAuthenticated: boolean;
-  login: () => void;
+interface UserContextInterface {
+  user: User | null;
+  accessToken: string;
+  refreshToken: string;
+  setToken: (accessToken: string, refreshToken: string) => void;
   logout: () => void;
-};
+  // register: (values: any, actions: any) => void;
+}
 
-export const authContext = createContext<AuthContextType>({
-  isAuthenticated: false,
-  login: () => { },
+export const UserContext = createContext<UserContextInterface>({
+  user: null,
+  accessToken: '',
+  refreshToken: '',
+  setToken: (accessToken: string, refreshToken: string) => { },
   logout: () => { },
+  // register: (values: any, actions: any) => { },
 });
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  let [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('accessToken'));
+export const useUserContext = () => React.useContext(UserContext);
 
-  const login = () => {
-    isAuthenticated = true;
+export function useCreateLoginContext(): UserContextInterface {
+
+  const [user, setUser] = useState<User | null>(null);
+  const [accessToken, setAccessToken] = useState<string>('');
+  const [refreshToken, setRefreshToken] = useState<string>('');
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      setUser(null);
+    } else {
+      setUser(jwtDecode<User>(accessToken || ''));
+    }
+  }, [accessToken, refreshToken]);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (accessToken && refreshToken) {
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+      setUser(jwtDecode<User>(accessToken));
+    }
+  }, []);
+
+  const setToken = (accessToken: string, refreshToken: string) => {
+    setAccessToken(accessToken);
+    setRefreshToken(refreshToken)
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
   };
 
   const logout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    setIsAuthenticated(false);
+    setAccessToken('');
+    setRefreshToken('');
+    setUser(null);
   };
 
+  // const register = (values: any, actions: any) => { };
+
+  return { user, accessToken, refreshToken, setToken, logout };
+}
+
+const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const context = useCreateLoginContext();
+
   return (
-    <authContext.Provider value={{ isAuthenticated, login, logout }}>
-      {children}
-    </authContext.Provider>
+    <UserContext.Provider value={context}>{children}</UserContext.Provider>
   );
 };
+
+export default UserContextProvider;
