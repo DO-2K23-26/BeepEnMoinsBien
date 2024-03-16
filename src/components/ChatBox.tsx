@@ -17,9 +17,15 @@ function ChatBox() {
   useEffect(() => {
     const fetchdata = async () => {
       if(!currentChannel) return;
-      const response = await axios.get(url + '/message/groupe/'+currentChannel);
-      const data = response.data.map((item: any) => ({ message: item.contenu, author: item.author }));
-      setMessages(data);
+      try {
+        const response = await axios.get(url + '/message/groupe/'+currentChannel);
+        if (!response) return;
+        const data = response.data.map((item: any) => ({ message: item.contenu, author: item.author }));
+        setMessages(data);
+      }
+      catch (error) {
+        console.error(error);
+      }
     }
     fetchdata();
   } , [currentChannel, url]);
