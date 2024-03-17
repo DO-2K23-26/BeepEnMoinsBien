@@ -56,8 +56,16 @@ function ChatBox() {
     }
   }
   
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
-    <div className="chat-container flex flex-col h-screen  bg-violet-200 w-full">
+    <div className="chat-container flex flex-col h-screen  bg-violet-200 w-full" ref={chatContainerRef}>
       <div className="chat-header p-2 ">
         <h2># Channel Name</h2>
       </div>
