@@ -21,6 +21,7 @@ const LoginComponent = () => {
         setToken(response.data.accessToken, response.data.refreshToken);
       }
       navigate('/');
+      window.location.reload();
     } catch (error) {
       console.error('Erreur lors de l\'authentification:', error);
       setError('Identifiant ou mot de passe incorrect');
