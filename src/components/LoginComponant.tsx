@@ -19,9 +19,9 @@ const LoginComponent = () => {
       const response = await axios.post(url + '/auth/login', { email, password });
       if (response.status === 200) {
         setToken(response.data.accessToken, response.data.refreshToken);
+        window.location.reload();
       }
       navigate('/');
-      window.location.reload();
     } catch (error) {
       console.error('Erreur lors de l\'authentification:', error);
       setError('Identifiant ou mot de passe incorrect');
