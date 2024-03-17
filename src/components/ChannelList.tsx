@@ -5,16 +5,23 @@ import { api_url } from "../context/envar";
 import { useContext, useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import JoinChannel from "./JoinChannel";
+import { useUserContext } from "../context/authcontext";
 
 function ChannelList() {
+  const { accessToken } = useUserContext();
   const url = useContext(api_url);
   const [channels, setChannels] = useState([]);
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      let config = {
+        headers: {
+          'Authorization': 'Bearer ' + accessToken
+        }
+      }
       try {
-        const response = await axios.get(url + '/groupe');
+        const response = await axios.get(url + '/groupe/getGroupes', config);
         setChannels(response.data);
       }
       catch (error) {
@@ -23,7 +30,7 @@ function ChannelList() {
     };
 
     fetchData();
-  }, [url]);
+  }, [url, accessToken]);
 
   const handleClose = () => {
     setShowSettings(false);
