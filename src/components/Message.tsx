@@ -1,6 +1,7 @@
 import { PencilLine, User } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { SocketContext } from "../context/socketcontext";
+import { UserContext } from "../context/authcontext";
 
 interface MessageProps {
     message: string;
@@ -13,6 +14,7 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
     const [visible, setVisible] = useState(false);
     const socketContext = useContext(SocketContext);
     const socket = useRef(socketContext?.socketValue);
+    const user = useContext(UserContext)?.user;
 
     const handleClick = () => {
         setEditMode(!editMode);
@@ -67,7 +69,7 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
                 {!editMode && <p id={id.toString()}>{message}</p>}
                 {editMode && <input id='editZone' type="text" defaultValue={message} onKeyDown={(e) => e.key === 'Enter' && handleEdit()}/>}
             </div>
-            {visible && (
+            {visible && user?.nickname === author && (
                 <button type="submit" className="mr-5 bg-white rounded-lg p-2 absolute right-0 -top-5" style={{ float: "right" }} onClick={handleClick}>
                     <PencilLine size={20} />
                 </button>

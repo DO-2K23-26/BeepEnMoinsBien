@@ -19,6 +19,7 @@ const LoginComponent = () => {
       const response = await axios.post(url + '/auth/login', { email, password });
       if (response.status === 200) {
         setToken(response.data.accessToken, response.data.refreshToken);
+        window.location.reload();
       }
       navigate('/');
     } catch (error) {
