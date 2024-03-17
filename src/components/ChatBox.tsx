@@ -64,7 +64,7 @@ function ChatBox() {
   const sendMessage = async (values: any) => {
     const payload = {
       contenu: values.message,
-      timestamp: new Date().getTime
+      timestamp: new Date().getTime(),
     };
     if (socket) {
       socket.current?.emit("chat", payload);
