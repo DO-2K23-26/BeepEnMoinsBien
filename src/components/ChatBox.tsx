@@ -66,16 +66,16 @@ function ChatBox() {
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    chatContainerRef.current.scrollTo(0, chatContainerRef.current.scrollHeight);
     }
   }, [messages]);
 
   return (
-    <div className="chat-container flex flex-col h-screen  bg-violet-200 w-full" ref={chatContainerRef}>
+    <div className="chat-container flex flex-col h-screen  bg-violet-200 w-full">
       <div className="chat-header p-2 ">
         <h2># Channel Name</h2>
       </div>
-      <div className="chat-messages flex-grow overflow-y-auto p-2">
+      <div className="chat-messages flex-grow overflow-y-auto p-2" ref={chatContainerRef}>
         {messages.map((msg, index) => <Message key={index} message={msg.message} author={msg.author} />)}
       </div>
       <div className="chat-input flex items-center p-4 ">
