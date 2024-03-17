@@ -13,15 +13,15 @@ function ChatBox() {
   const url = useContext(api_url);
   const { currentChannel } = useContext(ChannelContext);
 
-  const [messages, setMessages] = useState<{ message: any, author: any }[]>([]);
+  const [messages, setMessages] = useState<{ message: string, author: string, id: number }[]>([]);
 
   useEffect(() => {
     const fetchdata = async () => {
       if (!currentChannel) return;
       try {
         const response = await axios.get(url + '/message/groupe/' + currentChannel);
-        if (!response) return;
-        const data = response.data.map((item: any) => ({ message: item.contenu, author: item.author }));
+        if (!response.data) return;
+        const data = response.data.map((item: any) => ({ message: item.contenu, author: item.author, id: item.id}));
         setMessages(data);
       }
       catch (error) {
@@ -35,14 +35,12 @@ function ChatBox() {
     socket.current = socketContext?.socketValue;
 
     if (socket.current) {
-      console.log("socket is connected");
       socket.current.on("chat", (msg: any) => {
-        setMessages((prev) => [...prev, { message: msg.contenu, author: msg.author }]);
+        setMessages((prev) => [...prev, { message: msg.contenu, author: msg.author, id: msg.id}]);
       });
     }
 
     return () => {
-      console.log("socket is disconnected");
       socket.current?.off("chat");
     };
   }, [socketContext?.socketValue]);
@@ -79,7 +77,7 @@ function ChatBox() {
         <h2># Channel Name</h2>
       </div>
       <div className="chat-messages flex-grow overflow-y-auto p-2" ref={chatContainerRef}>
-        {messages.map((msg, index) => <Message key={index} message={msg.message} author={msg.author} />)}
+        {messages.map((msg, index) => <Message key={index} message={msg.message} author={msg.author} id={msg.id}/>)}
       </div>
 
 
