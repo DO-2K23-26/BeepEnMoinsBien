@@ -1,11 +1,9 @@
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import LoginComponent from '../components/LoginComponant';
 import RegisterComponent from '../components/RegisterComposant';
-import { ApiProvider } from '../context/envar';
-import { SocketProvider } from '../context/socketcontext';
-import Main from './Main';
-import { useContext } from 'react';
 import { useUserContext } from '../context/authcontext';
+import { ApiProvider } from '../context/envar';
+import Main from './Main';
 
 function App() {
   const { user } = useUserContext();

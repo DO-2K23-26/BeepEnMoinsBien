@@ -1,9 +1,9 @@
 
 import { Mic, Phone, Settings, User } from "lucide-react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useUserContext } from '../context/authcontext';
 import "./../style/index.css";
-import { useUserContext } from '../context/authcontext'
 
 function Myprofil() {
 
