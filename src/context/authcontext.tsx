@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 
 interface User {
   email: string;
-  nikname: string;
+  nickname: string;
 }
 
 interface UserContextInterface {
@@ -68,7 +68,7 @@ export function useCreateLoginContext(): UserContextInterface {
 
   // const register = (values: any, actions: any) => { };
 
-  return { user, accessToken, refreshToken, setToken, logout };
+  return { user, accessToken, refreshToken, setToken, logout } as UserContextInterface;
 }
 
 const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({
