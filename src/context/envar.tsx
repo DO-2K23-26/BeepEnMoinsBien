@@ -7,7 +7,7 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
     if (process.env.NODE_ENV === 'development') {
         url = 'http://localhost:9644';
     } else {
-        url = 'https://api.beep.gay';
+        url = 'http://localhost:9644';
     }
     return (
         <api_url.Provider value={url}>{children}</api_url.Provider>

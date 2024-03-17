@@ -8,6 +8,8 @@ import "./../style/index.css";
 function Myprofil() {
 
   const { logout } = useUserContext();
+  const { user } = useUserContext(); 
+  
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
@@ -29,7 +31,7 @@ function Myprofil() {
               <User color="black" size={40} />
             </span>
             <div className="ml-4">
-              <div className="text-sm font-medium text-gray-900">Thomas</div>
+              <div className="text-sm font-medium text-gray-900">{ user?.nickname}</div>
               <div className="text-xs font-light text-green-500">En ligne</div>
             </div>
             <div className="ml-auto flex flex-row items-center mr-4">
@@ -69,7 +71,8 @@ function Myprofil() {
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white p-4 rounded-lg border">
             <h2 className="text-lg font-medium mb-2">User Info</h2>
-            <p>Name: Thomas</p>
+            <p>Email: {user?.email}</p>
+            <p>Name: {user?.nickname}</p>
             <p>Status: En ligne</p>
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded mt-4"

@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 
 interface User {
   email: string;
-  nikname: string;
+  nickname: string;
 }
 
 interface UserContextInterface {
@@ -11,7 +11,6 @@ interface UserContextInterface {
   accessToken: string;
   refreshToken: string;
   setToken: (accessToken: string, refreshToken: string) => void;
-  getUser: () => User | null;
   logout: () => void;
   // register: (values: any, actions: any) => void;
 }
@@ -21,7 +20,6 @@ export const UserContext = createContext<UserContextInterface>({
   accessToken: '',
   refreshToken: '',
   setToken: (accessToken: string, refreshToken: string) => { },
-  getUser: () => null,
   logout: () => { },
   // register: (values: any, actions: any) => { },
 });
@@ -53,14 +51,6 @@ export function useCreateLoginContext(): UserContextInterface {
     }
   }, []);
 
-  const getUser = () => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) {
-      return null;
-    }
-    return jwtDecode<User>(accessToken);
-  }
-
   const setToken = (accessToken: string, refreshToken: string) => {
     setAccessToken(accessToken);
     setRefreshToken(refreshToken)
@@ -78,7 +68,7 @@ export function useCreateLoginContext(): UserContextInterface {
 
   // const register = (values: any, actions: any) => { };
 
-  return { user, accessToken, refreshToken, setToken, getUser, logout };
+  return { user, accessToken, refreshToken, setToken, logout } as UserContextInterface;
 }
 
 const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({
