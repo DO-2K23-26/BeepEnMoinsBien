@@ -16,13 +16,17 @@
 		"lucide-react": "^0.344.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"react-markdown": "^9.0.1",
 		"react-router-dom": "^6.22.3",
 		"react-scripts": "5.0.1",
+		"react-textarea-autosize": "^8.5.3",
+		"remark-gfm": "^4.0.0",
 		"serve": "^14.2.1",
 		"socket.io-client": "^4.7.4",
 		"ts-node": "^10.9.2",
 		"typescript": "^4.9.5",
-		"web-vitals": "^2.1.4"
+		"web-vitals": "^2.1.4",
+		"yup": "^1.4.0"
 	},
 	"scripts": {
 		"start": "PORT=9643 react-scripts start",
