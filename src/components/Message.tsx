@@ -1,8 +1,8 @@
-import { PencilLine, User } from "lucide-react";
-import { useContext, useEffect, useRef, useState } from "react";
-import { SocketContext } from "../context/socketcontext";
+import { PencilLine } from "lucide-react";
+import { useContext, useEffect, useRef, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { UserContext } from "../context/authcontext";
-import ReactMarkdown from "react-markdown";
+import { SocketContext } from "../context/socketcontext";
 
 interface MessageProps {
     message: string;
@@ -87,13 +87,19 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
                                 </button>
                             )}
                             {!editMode ?
-                                <textarea className="bg-blue-500 text-white rounded-lg py-2 px-4 break-words">
-                                    {message}
-                                </textarea>
+                                <div className="bg-blue-500 text-white rounded-lg py-2 px-4 break-words">
+                                    <ReactMarkdown>{message.replace(/\n/g, "  \n")}</ReactMarkdown>
+                                </div>
                                 :
                                 <p className="bg-blue-500 text-black rounded-lg py-2 px-4">
-                                    <input id='editZone' type="text" defaultValue={message} onKeyDown={(e) => e.key === 'Enter' && handleEdit} />
-                                </p>}
+                                    <textarea
+                                        id='editZone'
+                                        className="w-full h-full text-black bg-blue-200 p-2 rounded border-2 border-blue-300 focus:outline-none focus:border-blue-500"
+                                        defaultValue={message}
+                                        onKeyDown={(e) => e.key === 'Enter' && e.shiftKey === false && handleEdit()}
+                                    ></textarea>
+                                </p>
+                                }
 
                         </div>
                     </div>
@@ -102,33 +108,11 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
                 <div className="mb-2 flex justify-start items-start">
                     <div className="text-left">
                         <div className="text-xs text-gray-500 mb-1">{author}</div>
-                        <p className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 break-words">{message}</p>
+                        <p className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 break-words"><ReactMarkdown>{message}</ReactMarkdown></p>
                     </div>
                 </div>
             }
         </>
-        // <div className="message mb-2 hover:bg-violet-100 relative" onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)}>
-        //     <div className="flex mb-2">
-        //         <div>
-        //         <span className="w-10 h-10 rounded bg-slate-200 ">
-        //             <User color="black" size={30} />
-        //         </span>
-        //         </div>
-        //         <div>
-        //         <strong>{author}</strong>
-        //         </div>
-        //     </div>
-
-        //     <div className="bg-white rounded-lg p-4 text-black inline-block">
-        //         {!editMode && <p id={id.toString()}><ReactMarkdown>{message}</ReactMarkdown></p>}
-        //         {editMode && <input id='editZone' type="text" defaultValue={message} onKeyDown={(e) => e.key === 'Enter' && handleEdit()}/>}
-        //     </div>
-        //     {visible && user?.nickname === author && (
-        //         <button type="submit" className="mr-5 bg-white rounded-lg p-2 absolute right-0 -top-5" style={{ float: "right" }} onClick={handleClick}>
-        //             <PencilLine size={20} />
-        //         </button>
-        //     )}
-        // </div>
     );
 }
 
