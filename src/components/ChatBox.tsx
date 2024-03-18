@@ -2,10 +2,12 @@ import axios from 'axios';
 import { Field, Form, Formik } from 'formik';
 import { Plus, SendHorizonal } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from 'react';
+import * as Yup from 'yup';
 import { ChannelContext } from '../context/channel';
 import { api_url } from '../context/envar';
 import { SocketContext } from '../context/socketcontext';
 import Message from './Message';
+
 
 function ChatBox() {
   const socketContext = useContext(SocketContext);
@@ -70,6 +72,10 @@ function ChatBox() {
     values.message = '';
   }
 
+  const validationSchema = Yup.object({
+    message: Yup.string().required('A message is required'),
+  });
+
   return (
     <div className="chat-container flex flex-col h-screen  bg-violet-200 w-full">
 
@@ -86,6 +92,7 @@ function ChatBox() {
       <Formik
         initialValues={{ message: '' }}
         onSubmit={sendMessage}
+        validationSchema={validationSchema}
       >
         <Form>
           <div className="chat-input flex items-center p-4 ">
