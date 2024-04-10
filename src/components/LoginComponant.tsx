@@ -10,7 +10,6 @@ const LoginComponent = () => {
   const { setToken } = useUserContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error] = useState('');
   const navigate = useNavigate();
   const url = useContext(api_url);
 
@@ -58,8 +57,6 @@ const LoginComponent = () => {
           <button type="submit" className="bg-slate-900 text-white py-2 px-4 rounded hover:bg-slate-800 transition duration-300">Se connecter</button>
         </form>
         <p className="mt-4">Pas encore inscrit ? <Link to="/register" className="text-slate-900 hover:underline">S'inscrire</Link></p>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
-
       </div>
     </div>
   );
