@@ -11,6 +11,10 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+//axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
+
+
 root.render(
   <React.StrictMode>
     <UserContextProvider>
