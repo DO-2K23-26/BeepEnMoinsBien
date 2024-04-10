@@ -2,6 +2,7 @@ import { customAxios } from '../axios';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api_url } from '../context/envar';
+import { toast } from 'react-toastify';
 import { useUserContext } from '../context/authcontext';
 
 const LoginComponent = () => {
@@ -9,7 +10,6 @@ const LoginComponent = () => {
   const { setToken } = useUserContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
   const url = useContext(api_url);
 
@@ -19,12 +19,13 @@ const LoginComponent = () => {
       const response = await customAxios.post(url + '/auth/login', { email, password });
       if (response.status === 200) {
         setToken(response.data.accessToken, response.data.refreshToken);
+        toast.success('Connecté avec succès !', { autoClose: 2000, position: 'top-center' });
         window.location.reload();
       }
       navigate('/');
     } catch (error) {
       console.error('Erreur lors de l\'authentification:', error);
-      setError('Identifiant ou mot de passe incorrect');
+      toast.error('Identifiant ou mot de passe incorrect', { autoClose: 2000, position: 'top-center' });
     }
   };
 
@@ -54,8 +55,6 @@ const LoginComponent = () => {
           <button type="submit" className="bg-slate-900 text-white py-2 px-4 rounded hover:bg-slate-800 transition duration-300">Se connecter</button>
         </form>
         <p className="mt-4">Pas encore inscrit ? <Link to="/register" className="text-slate-900 hover:underline">S'inscrire</Link></p>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
-
       </div>
     </div>
   );

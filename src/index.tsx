@@ -4,6 +4,7 @@ import './style/index.css';
 import { App } from './pages/App';
 import reportWebVitals from './reportWebVitals';
 import UserContextProvider from './context/authcontext';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -2,13 +2,14 @@ import { customAxios } from '../axios';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api_url } from '../context/envar';
+import { toast } from 'react-toastify';
+
 
 const RegisterComponent = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [pseudo, setPseudo] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
   const url = useContext(api_url);
 
@@ -17,11 +18,14 @@ const RegisterComponent = () => {
     try {
       const response = await customAxios.post(url + '/user', { email, nickname: pseudo, password });
       console.log('Réponse du serveur:', response.data);
+      
       // Redirection vers une autre page après une inscription réussie
       navigate('/login');
+      toast.success('Inscription réussie. Vous êtes maintenant redirigé vers la page de connexion.', { autoClose: 2000, position: 'top-center' });
+
     } catch (error) {
       console.error('Erreur lors de l\'inscription:', error);
-      setError('Erreur lors de l\'inscription. Veuillez réessayer.');
+      toast.error('Erreur lors de l\'inscription. Veuillez réessayer.', { autoClose: 2000, position: 'top-center' });
     }
   };
 
@@ -60,7 +64,6 @@ const RegisterComponent = () => {
           <button type="submit" className="bg-slate-900 text-white py-2 px-4 rounded hover:bg-slate-800 transition duration-300">S'inscrire</button>
         </form>
         <p className="mt-4">Déjà inscrit ? <Link to="/login" className="text-slate-900 hover:underline">Se connecter</Link></p>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
       </div>
     </div>
   );
