@@ -5,6 +5,7 @@ import { App } from './pages/App';
 import reportWebVitals from './reportWebVitals';
 import UserContextProvider from './context/authcontext';
 import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

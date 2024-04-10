@@ -2,6 +2,8 @@ import axios from 'axios';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api_url } from '../context/envar';
+import { toast } from 'react-toastify';
+
 
 const RegisterComponent = () => {
 
@@ -26,7 +28,7 @@ const RegisterComponent = () => {
       navigate('/login');
     } catch (error) {
       console.error('Erreur lors de l\'inscription:', error);
-      setError('Erreur lors de l\'inscription. Veuillez réessayer.');
+      toast.error('Erreur lors de l\'inscription. Veuillez réessayer.', { autoClose: 2000, position: 'top-center' });
     }
   };
 
