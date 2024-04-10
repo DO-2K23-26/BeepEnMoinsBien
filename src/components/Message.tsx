@@ -30,7 +30,12 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
     //const for the delete button
     const handleClickDelete = () => {
         // delete here the message
-        console.debug("Message éffacé???");
+        const payload = {
+            id: id
+        };
+        if (socket) {
+            socket.current?.emit("delete", payload);
+        }
     }
 
     const messageRef = useRef<HTMLDivElement>(null);

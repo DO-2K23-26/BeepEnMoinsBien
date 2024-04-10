@@ -41,6 +41,12 @@ function ChatBox() {
       socket.current.on("chat", (msg: any) => {
         setMessages((prev) => [...prev, { message: msg.contenu, author: msg.author, id: msg.id }]);
       });
+      socket.current.on("delete",(msg: any) => {
+        setMessages((prev) => {
+          const updatedMessages = prev.filter(message => message.id !== msg);
+          return updatedMessages;
+        });
+      });
     }
 
     return () => {
