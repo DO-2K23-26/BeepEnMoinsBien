@@ -17,7 +17,8 @@ const RegisterComponent = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (password !== confirmPassword) { // Vérifiez si le mot de passe et le mot de passe de vérification sont identiques
-      setError('Les mots de passe ne correspondent pas. Veuillez réessayer.');
+      toast.error('Les mots de passe ne correspondent pas. Veuillez réessayer.', { autoClose: 2000, position: 'top-center' });
+
       return;
     }
     try {
