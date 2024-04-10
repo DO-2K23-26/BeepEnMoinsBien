@@ -1,4 +1,5 @@
 import { PencilLine } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -21,8 +22,15 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
     const [visible, setVisible] = useState(false);
     const [messageState, setMessageState] = useState(message);
 
+    //const for the edit button
     const handleClick = () => {
         setEditMode(!editMode);
+    }
+
+    //const for the delete button
+    const handleClickDelete = () => {
+        // delete here the message
+        console.debug("Message éffacé???");
     }
 
     const messageRef = useRef<HTMLDivElement>(null);
@@ -75,6 +83,15 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
                         <div className="text-xs text-gray-500 mb-1">{author}</div>
                         <div className="flex items-center gap-2">
                             {visible && (
+                                <>
+                                <button
+                                    className="bg-blue-300 text-white rounded-lg p-2 hover:bg-blue-400 transition-colors duration-300"
+                                    onClick={handleClickDelete}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    <Trash2Icon size={20} />
+                                </button>
                                 <button
                                     className="bg-blue-300 text-white rounded-lg p-2 hover:bg-blue-400 transition-colors duration-300"
                                     onClick={handleClick}
@@ -83,6 +100,7 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
                                 >
                                     <PencilLine size={20} />
                                 </button>
+                                </>
                             )}
                             {!editMode ?
                                 <div className="bg-blue-500 text-white rounded-lg py-2 px-4 break-words">
