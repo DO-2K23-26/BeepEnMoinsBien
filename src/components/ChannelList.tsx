@@ -21,7 +21,7 @@ function ChannelList() {
         }
       }
       try {
-        const response = await axios.get(url + '/groupe/getGroupes', config);
+        const response = await axios.get(url + '/groupe', config);
         setChannels(response.data);
       }
       catch (error) {
