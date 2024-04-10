@@ -1,23 +1,14 @@
 import axios from 'axios';
-import { useContext } from 'react';
-import { useUserContext } from './context/authcontext'; 
-import { api_url } from './context/envar';
-
-
-const url = useContext(api_url);
 
 export const customAxios = axios.create({
-  baseURL: url,
+  baseURL: "",
 });
-
-const { accessToken } = useUserContext();
-const { setToken } = useUserContext();
 
 
 customAxios.interceptors.request.use(
     
         async (config) => {
-            const token = accessToken;
+            const token = localStorage.getItem('accessToken');
             if (token) {
                 config.headers["Authorization"] = `Bearer ${token}`;
             }
@@ -31,9 +22,18 @@ customAxios.interceptors.request.use(
 // Function to refresh the token
 const refreshToken = async () => {
     try {
-      const resp = await customAxios.get("auth/refresh");
-      const { token } = resp.data;
-      setToken(token.accessToken, token.refreshToken);
+      let url = '';
+        if (process.env.NODE_ENV === 'development') {
+            url = 'http://localhost:9644';
+        } else {
+            url = 'https://api.beep.gay';
+        }
+      const resp = await axios.post(url + "/auth/refresh", { refreshToken: localStorage.getItem('refreshToken') });
+      console.log("rep", resp.data.accessToken);
+      const token = resp.data;
+      console.log("Token refreshed");
+      localStorage.setItem('accessToken', token.accessToken);
+      localStorage.setItem('refreshToken', token.refreshToken);
       return token;
     } catch (error) {
       console.error("Error refreshing token:", error);
