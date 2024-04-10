@@ -10,7 +10,6 @@ const LoginComponent = () => {
   const { setToken } = useUserContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error] = useState('');
   const navigate = useNavigate();
   const url = useContext(api_url);
 

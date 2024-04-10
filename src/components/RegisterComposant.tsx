@@ -10,7 +10,6 @@ const RegisterComponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [pseudo, setPseudo] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
   const url = useContext(api_url);
 
@@ -62,7 +61,6 @@ const RegisterComponent = () => {
           <button type="submit" className="bg-slate-900 text-white py-2 px-4 rounded hover:bg-slate-800 transition duration-300">S'inscrire</button>
         </form>
         <p className="mt-4">Déjà inscrit ? <Link to="/login" className="text-slate-900 hover:underline">Se connecter</Link></p>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
       </div>
     </div>
   );
