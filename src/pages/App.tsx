@@ -14,7 +14,7 @@ function App() {
   if (!user) {
     return (
       <>
-        <ToastContainer />
+        <ToastContainer limit={3} />
         <Router>
           <ApiProvider>
             <Routes>
@@ -29,7 +29,7 @@ function App() {
   }
   return (
     <>
-      <ToastContainer />
+      <ToastContainer limit={3} />
       <Router>
         <ApiProvider>
           <Routes>
