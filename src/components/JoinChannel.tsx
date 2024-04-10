@@ -9,7 +9,7 @@ function JoinChannel( { onClose }: Readonly<{ onClose: () => void }> ) {
     const handleValidate = async () => {
         const channel = document.getElementById('channelName') as HTMLInputElement;
         try {
-            await axios.post(url + '/groupe/createAndJoin/' + channel.value );
+            await axios.post(url + '/groupe/' + channel.value );
             onClose();
             window.location.reload();
         }
