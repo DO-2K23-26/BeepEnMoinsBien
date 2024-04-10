@@ -1,53 +1,30 @@
-import React from "react";
 import "./../style/index.css";
 import UserLine from "./UserLine";
+import { customAxios } from '../axios';
+import { useContext, useEffect, useState } from "react";
+import { api_url } from "../context/envar";
+import { ChannelContext } from "../context/channel";
 
 function UserListChatBox() {
-  // Données factices
-  const dummyData = [
-    {
-      name: "Tom",
-      role: "Owner",
-      avatar: "url_to_tom_avatar",
-      status: "Online",
-    },
-    {
-      name: "Nina",
-      role: "Super User",
-      avatar: "url_to_nina_avatar",
-      status: "Offline",
-    },
-    {
-      name: "Paul",
-      role: "Super User",
-      avatar: "url_to_paul_avatar",
-      status: "Online",
-    },
-    {
-      name: "Lise",
-      role: "User",
-      avatar: "url_to_lise_avatar",
-      status: "Away",
-    },
-    {
-      name: "Mike",
-      role: "User",
-      avatar: "url_to_mike_avatar",
-      status: "Online",
-    },
-    {
-      name: "Lise",
-      role: "Time Out",
-      avatar: "url_to_lise_avatar",
-      status: "Offline",
-    },
-    {
-      name: "Mike",
-      role: "Time Out",
-      avatar: "url_to_mike_avatar",
-      status: "Away",
-    },
-  ];
+  const [users, setUsers] = useState({ owner: "", superUsers: [], users: [], timeOut: [] });
+  const url = useContext(api_url);
+  const { currentChannel } = useContext(ChannelContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response: any = await customAxios.get(url + '/groupe/' + currentChannel);
+        if (!response.data) return;
+        console.log(response.data);
+        setUsers(response.data);
+      }
+      catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [url, currentChannel]);
 
   return (
     <div className="h-screen flex flex-col top-0 left-0 w-80 bg-violet-300 h-full border-r justify-between">
@@ -55,13 +32,37 @@ function UserListChatBox() {
         <div className="flex  h-14 ">
           <div>Utilisateur</div>
         </div>
-        {dummyData.map((user, index) => (
+        <UserLine
+          name={users.owner}
+          role="Owner"
+          status="Offline"
+          profileImage="To be implemented"
+        />
+        {users.superUsers.map((user, index) => (
           <UserLine
             key={index}
-            name={user.name}
-            role={user.role}
-            status={user.status}
-            profileImage={user.avatar}
+            name={user}
+            role="Super User"
+            status="Offline"
+            profileImage="To be implemented"
+          />
+        ))}
+        {users.users.map((user, index) => (
+          <UserLine
+            key={index}
+            name={user}
+            role="User"
+            status="Offline"
+            profileImage="To be implemented"
+          />
+        ))}
+        {users.timeOut.map((user, index) => (
+          <UserLine
+            key={index}
+            name={user}
+            role="Time Out"
+            status="Offline"
+            profileImage="To be implemented"
           />
         ))}
       </div>
