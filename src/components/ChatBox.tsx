@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { customAxios } from '../axios';
 import { Form, Formik } from 'formik';
 import { Plus, SendHorizonal } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -23,7 +23,7 @@ function ChatBox() {
     const fetchdata = async () => {
       if (!currentChannel) return;
       try {
-        const response = await axios.get(url + '/message/groupe/' + currentChannel);
+        const response = await customAxios.get(url + '/message/groupe/' + currentChannel);
         if (!response.data) return;
         const data = response.data.map((item: any) => ({ message: item.contenu, author: item.author, id: item.id }));
         setMessages(data);

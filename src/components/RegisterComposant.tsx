@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { customAxios } from '../axios';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api_url } from '../context/envar';
@@ -17,7 +17,7 @@ const RegisterComponent = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(url + '/user', { email, nickname: pseudo, password });
+      const response = await customAxios.post(url + '/user', { email, nickname: pseudo, password });
       console.log('Réponse du serveur:', response.data);
       // Redirection vers une autre page après une inscription réussie
       navigate('/login');

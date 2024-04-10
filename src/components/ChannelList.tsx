@@ -1,4 +1,4 @@
-import axios from "axios";
+import { customAxios } from "../axios";
 import "./../style/index.css";
 import Channel from "./Channel";
 import { api_url } from "../context/envar";
@@ -21,7 +21,7 @@ function ChannelList() {
         }
       }
       try {
-        const response = await axios.get(url + '/groupe', config);
+        const response = await customAxios.get(url + '/groupe', config);
         setChannels(response.data);
       }
       catch (error) {
