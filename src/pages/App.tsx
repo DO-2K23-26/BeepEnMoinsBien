@@ -3,6 +3,9 @@ import LoginComponent from '../components/LoginComponant';
 import RegisterComponent from '../components/RegisterComposant';
 import { useUserContext } from '../context/authcontext';
 import { ApiProvider } from '../context/envar';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Main from './Main';
 
 function App() {
@@ -10,26 +13,31 @@ function App() {
 
   if (!user) {
     return (
-      <Router>
-        <ApiProvider>
-          <Routes>
-            <Route path="*" element={<Navigate to="/login" replace />} />
-            <Route path="/login" element={<LoginComponent />} />
-            <Route path="/register" element={<RegisterComponent />} />
-          </Routes>
-        </ApiProvider>
-      </Router>
+      <>
+        <ToastContainer />
+        <Router>
+          <ApiProvider>
+            <Routes>
+              <Route path="*" element={<Navigate to="/login" replace />} />
+              <Route path="/login" element={<LoginComponent />} />
+              <Route path="/register" element={<RegisterComponent />} />
+            </Routes>
+          </ApiProvider>
+        </Router>
+      </>
     )
   }
   return (
-    <Router>
-      <ApiProvider>
-        <Routes>
-            <Route path="*" element={<Main />} />
-        </Routes>
-      </ApiProvider>
-
-    </Router>
+    <>
+      <ToastContainer />
+      <Router>
+        <ApiProvider>
+          <Routes>
+              <Route path="*" element={<Main />} />
+          </Routes>
+        </ApiProvider>
+      </Router>
+    </>
   );
 }
 

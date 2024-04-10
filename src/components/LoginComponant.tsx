@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api_url } from '../context/envar';
+import { toast } from 'react-toastify';
 import { useUserContext } from '../context/authcontext';
 
 const LoginComponent = () => {
@@ -9,7 +10,7 @@ const LoginComponent = () => {
   const { setToken } = useUserContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [error] = useState('');
   const navigate = useNavigate();
   const url = useContext(api_url);
 
@@ -19,14 +20,17 @@ const LoginComponent = () => {
       const response = await axios.post(url + '/auth/login', { email, password });
       if (response.status === 200) {
         setToken(response.data.accessToken, response.data.refreshToken);
+        toast.success('Connecté avec succès !', { autoClose: 2000, position: 'top-center' });
         window.location.reload();
       }
       navigate('/');
     } catch (error) {
       console.error('Erreur lors de l\'authentification:', error);
-      setError('Identifiant ou mot de passe incorrect');
+      toast.error('Identifiant ou mot de passe incorrect', { autoClose: 2000, position: 'top-center' });
     }
   };
+
+  
 
   return (
     <div className="flex justify-center items-center h-screen">
