@@ -18,8 +18,11 @@ const RegisterComponent = () => {
     try {
       const response = await customAxios.post(url + '/user', { email, nickname: pseudo, password });
       console.log('Réponse du serveur:', response.data);
+      
       // Redirection vers une autre page après une inscription réussie
       navigate('/login');
+      toast.success('Inscription réussie. Vous êtes maintenant redirigé vers la page de connexion.', { autoClose: 2000, position: 'top-center' });
+
     } catch (error) {
       console.error('Erreur lors de l\'inscription:', error);
       toast.error('Erreur lors de l\'inscription. Veuillez réessayer.', { autoClose: 2000, position: 'top-center' });
