@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 interface User {
   email: string;
@@ -42,8 +43,37 @@ export function useCreateLoginContext(): UserContextInterface {
   }, [accessToken, refreshToken]);
 
   useEffect(() => {
+    // Get tokens from local storage
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
+
+    // Check if token is expired
+    if (accessToken) {
+      const decodedToken: any = jwtDecode(accessToken);
+      if (decodedToken.exp * 1000 < Date.now()) {
+        console.log('Access token expired');
+        if (refreshToken) {
+          console.log('Refreshing token');
+          // Refresh token
+          axios.post('/auth/refresh', { refreshToken })
+            .then((response) => {
+              setToken(response.data.accessToken, response.data.refreshToken);
+            })
+            .then(() => {
+              console.log('Token refreshed');
+            })
+            .catch((error) => {
+              console.error('Error refreshing token:', error);
+              logout();
+            });
+        } else {
+          console.log('No refresh token');
+          logout();
+        }
+      }
+    }
+
+    // Set tokens in state
     if (accessToken && refreshToken) {
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
