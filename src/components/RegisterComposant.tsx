@@ -7,6 +7,7 @@ const RegisterComponent = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [pseudo, setPseudo] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -14,6 +15,10 @@ const RegisterComponent = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (password !== confirmPassword) { // Vérifiez si le mot de passe et le mot de passe de vérification sont identiques
+      setError('Les mots de passe ne correspondent pas. Veuillez réessayer.');
+      return;
+    }
     try {
       const response = await axios.post(url + '/user', { email, nickname: pseudo, password });
       console.log('Réponse du serveur:', response.data);
@@ -54,6 +59,15 @@ const RegisterComponent = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-2 rounded border border-gray-300 focus:outline-none focus:border-slate-900"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1">Confirmer le mot de passe:</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full p-2 rounded border border-gray-300 focus:outline-none focus:border-slate-900"
             />
           </div>
