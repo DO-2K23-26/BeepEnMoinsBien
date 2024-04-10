@@ -1,6 +1,6 @@
 import React from "react";
 import "./../style/index.css";
-import User from "./User";
+import UserLine from "./UserLine";
 
 function UserListChatBox() {
   // Données factices
@@ -56,9 +56,10 @@ function UserListChatBox() {
           <div>Utilisateur</div>
         </div>
         {dummyData.map((user, index) => (
-          <User
+          <UserLine
             key={index}
             name={user.name}
+            role={user.role}
             status={user.status}
             profileImage={user.avatar}
           />
