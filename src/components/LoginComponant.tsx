@@ -10,6 +10,7 @@ const LoginComponent = () => {
   const { setToken } = useUserContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error] = useState('');
   const navigate = useNavigate();
   const url = useContext(api_url);
 
@@ -28,8 +29,6 @@ const LoginComponent = () => {
       toast.error('Identifiant ou mot de passe incorrect', { autoClose: 2000, position: 'top-center' });
     }
   };
-
-  
 
   return (
     <div className="flex justify-center items-center h-screen">
