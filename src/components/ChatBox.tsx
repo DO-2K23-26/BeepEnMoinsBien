@@ -17,6 +17,7 @@ function ChatBox() {
   const { currentChannel } = useContext(ChannelContext);
 
   const [messages, setMessages] = useState<{ message: string, author: string, id: number }[]>([]);
+  const [messageToRemove, setMessageToRemove] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -35,24 +36,31 @@ function ChatBox() {
   }, [currentChannel, url]);
 
   useEffect(() => {
+    if (messageToRemove !== null) {
+      setMessages(currentMessages => currentMessages.filter(message => message.id != messageToRemove));
+      setMessageToRemove(null); // Reset the messageToRemove state
+    }
+  }, [messageToRemove]);
+
+  useEffect(() => {
     socket.current = socketContext?.socketValue;
 
     if (socket.current) {
       socket.current.on("chat", (msg: any) => {
         setMessages((prev) => [...prev, { message: msg.contenu, author: msg.author, id: msg.id }]);
       });
-      socket.current.on("delete",(msg: any) => {
-        setMessages((prev) => {
-          const updatedMessages = prev.filter(message => message.id !== msg);
-          return updatedMessages;
-        });
+      socket.current.on("delete", (msg: number) => {
+        if (messages.find(message => message.id === msg)) {
+          setMessageToRemove(msg);
+        }
       });
     }
 
     return () => {
       socket.current?.off("chat");
+      socket.current?.off("delete");
     };
-  }, [socketContext?.socketValue]);
+  }, [socketContext?.socketValue, messages]);
 
   const handleJoin = () => {
     if (socket) {
@@ -90,8 +98,8 @@ function ChatBox() {
         <h2># Channel Name</h2>
       </div>
       <div className="chat-messages flex-grow overflow-y-auto p-2" ref={chatContainerRef}>
-        {messages.map((msg, index) => (
-          <Message key={index} message={msg.message} author={msg.author} id={msg.id} />
+        {messages.map((msg) => (
+          <Message key={msg.id} message={msg.message} author={msg.author} id={msg.id} />
         ))}
       </div>
 
