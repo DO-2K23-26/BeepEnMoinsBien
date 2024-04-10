@@ -1,4 +1,4 @@
-import axios from "axios";
+import { customAxios } from "../axios";
 import { useContext } from "react";
 import { api_url } from "../context/envar";
 import { X } from "lucide-react";
@@ -9,7 +9,7 @@ function JoinChannel( { onClose }: Readonly<{ onClose: () => void }> ) {
     const handleValidate = async () => {
         const channel = document.getElementById('channelName') as HTMLInputElement;
         try {
-            await axios.post(url + '/groupe/' + channel.value );
+            await customAxios.post(url + '/groupe/' + channel.value );
             onClose();
             window.location.reload();
         }
