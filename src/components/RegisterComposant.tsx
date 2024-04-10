@@ -16,19 +16,20 @@ const RegisterComponent = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (password !== confirmPassword) { // Vérifiez si le mot de passe et le mot de passe de vérification sont identiques
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (password !== confirmPassword) {
       toast.error('Les mots de passe ne correspondent pas. Veuillez réessayer.', { autoClose: 2000, position: 'top-center' });
-
+      return;
+    }
+    if (!passwordRegex.test(password)) {
+      toast.error('Le mot de passe doit contenir au moins 8 caractères et comprendre à la fois des chiffres et des lettres.', { autoClose: 5000, position: 'top-center' });
       return;
     }
     try {
       const response = await customAxios.post(url + '/user', { email, nickname: pseudo, password });
       console.log('Réponse du serveur:', response.data);
-      
-      // Redirection vers une autre page après une inscription réussie
       navigate('/login');
       toast.success('Inscription réussie. Vous êtes maintenant redirigé vers la page de connexion.', { autoClose: 2000, position: 'top-center' });
-
     } catch (error) {
       console.error('Erreur lors de l\'inscription:', error);
       toast.error('Erreur lors de l\'inscription. Veuillez réessayer.', { autoClose: 2000, position: 'top-center' });
