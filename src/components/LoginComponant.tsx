@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { customAxios } from '../axios';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api_url } from '../context/envar';
@@ -16,7 +16,7 @@ const LoginComponent = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(url + '/auth/login', { email, password });
+      const response = await customAxios.post(url + '/auth/login', { email, password });
       if (response.status === 200) {
         setToken(response.data.accessToken, response.data.refreshToken);
         window.location.reload();

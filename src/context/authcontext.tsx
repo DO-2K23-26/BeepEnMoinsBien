@@ -55,7 +55,13 @@ export function useCreateLoginContext(): UserContextInterface {
         if (refreshToken) {
           console.log('Refreshing token');
           // Refresh token
-          axios.post('/auth/refresh', { refreshToken })
+          let url = '';
+          if (process.env.NODE_ENV === 'development') {
+            url = 'http://localhost:9644';
+          } else {
+            url = 'https://api.beep.gay';
+          }
+          axios.post( url + '/auth/refresh', { refreshToken })
             .then((response) => {
               setToken(response.data.accessToken, response.data.refreshToken);
             })
