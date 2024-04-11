@@ -3,6 +3,7 @@ import { Crown, Swords, Timer } from "lucide-react";
 import { customAxios } from '../axios';
 import { api_url } from "../context/envar";
 import { ChannelContext } from "../context/channel";
+import { toast } from "react-toastify";
 
 type UserProps = {
   name: string;
@@ -28,13 +29,6 @@ function UserLine({ name, status, role, profileImage }: UserProps) {
         return '';
     }
   }
-
-  const description = document.getElementById("motif");
-  const timer = document.getElementById("timer");
-
-  console.debug(description);
-  console.debug(timer);
-  console.debug("Tesssssssssssst");
 
   // Fonction pour obtenir l'icône en fonction du rôle
   const getRoleIcon = (role: string) => {
@@ -84,9 +78,26 @@ function UserLine({ name, status, role, profileImage }: UserProps) {
     setShowModal(false);
   }
 
+  const timeout = async () => {
+    try {
+      const reason = (document.getElementById('motif') as HTMLInputElement)?.value;
+      const time = (document.getElementById('timer') as HTMLInputElement)?.value;
+      console.log(reason, time);
+      const response: any = await customAxios.post(url + '/groupe/' + currentChannel + '/timeout', { user: name, time: time, reason: reason});
+      if (!response.data) return;
+    }
+    catch (error) {
+      console.error(error);
+      toast.error("Error timing out user");
+    }
+  }
+
   const handleTimeout = (event: React.MouseEvent, ) => {
     event.stopPropagation();
     // Ici, vous pouvez ajouter la logique pour mettre l'utilisateur en "Time Out"
+
+    timeout();
+
     handleCloseModal(event);
   }
 
@@ -109,16 +120,14 @@ function UserLine({ name, status, role, profileImage }: UserProps) {
             <p>Name: {name}</p>
             <p>Status: {status}</p>
             <p>
-            <label>Motif : 
-              <input required type="text" name="motif" className="rounded-lg border-2 border-black-100"/>
-              (s)
-            </label>
+              <label>Motif : 
+                <input required type="text" id="motif" name="motif" className="rounded-lg border-2 border-black-100"/>(s)
+              </label>
             </p>
             <p>
-            <label>Durée : 
-            <input type="number" id="timer" name="timer" min="10" className="rounded-lg border-2 border-black-100"/>
-            (s)
-            </label>
+              <label>Durée : 
+                <input type="number" id="timer" name="timer" min="10" className="rounded-lg border-2 border-black-100"/>(s)
+              </label>
             </p>
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded mt-4"

@@ -7,6 +7,7 @@ import { ChannelContext } from "../context/channel";
 
 function UserListChatBox() {
   const [users, setUsers] = useState({ owner: "", superUsers: [], users: [], timeOut: [] });
+  const [hidden, setHidden] = useState(false);
   const url = useContext(api_url);
   const { currentChannel } = useContext(ChannelContext);
 
@@ -15,7 +16,6 @@ function UserListChatBox() {
       try {
         const response: any = await customAxios.get(url + '/groupe/' + currentChannel);
         if (!response.data) return;
-        console.log(response.data);
         setUsers(response.data);
       }
       catch (error) {
@@ -23,11 +23,17 @@ function UserListChatBox() {
       }
     };
 
-    fetchData();
+    if (currentChannel !== null) {
+      setHidden(false);
+      fetchData();
+    }
+    else {
+      setHidden(true);
+    }
   }, [url, currentChannel]);
 
   return (
-    <div className="h-screen flex flex-col top-0 left-0 w-80 bg-violet-300 h-full border-r justify-between">
+    <div className={`h-screen flex flex-col top-0 left-0 w-80 bg-violet-300 h-full border-r justify-between ${hidden && "hidden"}`}>
       <div className="flex flex-col h-full">
         <div className="flex items-center justify-center h-14 border-b border-black">
           <div>Utilisateur</div>

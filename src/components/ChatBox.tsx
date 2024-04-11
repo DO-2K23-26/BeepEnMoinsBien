@@ -38,7 +38,8 @@ function ChatBox() {
         console.error(error);
       }
     };
-    fetchdata();
+
+    if (currentChannel !== null) fetchdata();
   }, [currentChannel, url]);
 
   useEffect(() => {
