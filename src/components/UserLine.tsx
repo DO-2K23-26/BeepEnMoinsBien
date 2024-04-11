@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { User, Crown, Swords, Timer } from "lucide-react";
+import { customAxios } from '../axios';
+import { api_url } from "../context/envar";
+import { ChannelContext } from "../context/channel";
 
 type UserProps = {
   name: string;
@@ -10,10 +13,8 @@ type UserProps = {
 
 function UserLine({ name, status, role, profileImage }: UserProps) {
   const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    console.log(`Le composant User a été rendu avec le nom ${name}`);
-  }, [name]);
+  const url = useContext(api_url);
+  const { currentChannel } = useContext(ChannelContext);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -42,7 +43,32 @@ function UserLine({ name, status, role, profileImage }: UserProps) {
     }
   }
 
-  const handleOpenModal = () => {
+  const handleIsSuperUser = async () => {
+    try {
+      const response: any = await customAxios.get(url + '/groupe/' + currentChannel + '/superuser');
+      if (!response.data) return;
+      return response.data;
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleIsOwner = async () => {
+    try {
+      const response: any = await customAxios.get(url + '/groupe/' + currentChannel + '/owner');
+      if (!response.data) return;
+      return response.data;
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleOpenModal = async () => {
+    const isSuperUser = await handleIsSuperUser();
+    const isOwner = await handleIsOwner();
+    if (!isSuperUser && !isOwner) return;
     setShowModal(true);
   }
 
@@ -54,16 +80,15 @@ function UserLine({ name, status, role, profileImage }: UserProps) {
   const handleTimeout = (event: React.MouseEvent) => {
     event.stopPropagation();
     // Ici, vous pouvez ajouter la logique pour mettre l'utilisateur en "Time Out"
-    console.log(`${name} a été mis en Time Out`);
     handleCloseModal(event);
   }
 
   return (
     <div onClick={handleOpenModal} className="flex items-center hover:bg-violet-400 rounded-2xl p-3 my-1 mx-2 transition-colors duration-200">
-      <img src={profileImage} className="mr-2 w-10 h-10 border-2 border-black rounded"/>
+      <img src={profileImage} className="mr-2 w-10 h-10 border-2 border-black rounded" />
       <div className="flex justify-between w-full">
         <div className="flex ">
-        <h2 className="text-black mr-2">{name} </h2>
+          <h2 className="text-black mr-2">{name} </h2>
           <div className="flex ">
             {getRoleIcon(role)}
           </div>
@@ -92,7 +117,7 @@ function UserLine({ name, status, role, profileImage }: UserProps) {
         </div>
       )}
     </div>
-    
+
   );
 }
 
