@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { User, Crown, Swords, Timer } from "lucide-react";
+import React, { useState, useContext } from "react";
+import { Crown, Swords, Timer } from "lucide-react";
 import { customAxios } from '../axios';
 import { api_url } from "../context/envar";
 import { ChannelContext } from "../context/channel";
@@ -28,6 +28,13 @@ function UserLine({ name, status, role, profileImage }: UserProps) {
         return '';
     }
   }
+
+  const description = document.getElementById("motif");
+  const timer = document.getElementById("timer");
+
+  console.debug(description);
+  console.debug(timer);
+  console.debug("Tesssssssssssst");
 
   // Fonction pour obtenir l'icône en fonction du rôle
   const getRoleIcon = (role: string) => {
@@ -77,7 +84,7 @@ function UserLine({ name, status, role, profileImage }: UserProps) {
     setShowModal(false);
   }
 
-  const handleTimeout = (event: React.MouseEvent) => {
+  const handleTimeout = (event: React.MouseEvent, ) => {
     event.stopPropagation();
     // Ici, vous pouvez ajouter la logique pour mettre l'utilisateur en "Time Out"
     handleCloseModal(event);
@@ -101,6 +108,18 @@ function UserLine({ name, status, role, profileImage }: UserProps) {
             <h2 className="text-lg font-medium mb-2">User Info</h2>
             <p>Name: {name}</p>
             <p>Status: {status}</p>
+            <p>
+            <label>Motif : 
+              <input required type="text" name="motif" className="rounded-lg border-2 border-black-100"/>
+              (s)
+            </label>
+            </p>
+            <p>
+            <label>Durée : 
+            <input type="number" id="timer" name="timer" min="10" className="rounded-lg border-2 border-black-100"/>
+            (s)
+            </label>
+            </p>
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
               onClick={handleCloseModal}
