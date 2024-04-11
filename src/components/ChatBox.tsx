@@ -38,13 +38,14 @@ function ChatBox() {
         console.error(error);
       }
     };
-    fetchdata();
+
+    if (currentChannel !== null) fetchdata();
   }, [currentChannel, url]);
 
   useEffect(() => {
     if (messageToRemove !== null) {
       setMessages((currentMessages) =>
-        currentMessages.filter((message) => message.id != messageToRemove)
+        currentMessages.filter((message) => message.id !== messageToRemove)
       );
       setMessageToRemove(null); // Reset the messageToRemove state
     }

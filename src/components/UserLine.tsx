@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
-import { User, Crown, Swords, Timer } from "lucide-react";
+import React, { useState, useContext } from "react";
+import { Crown, Swords, Timer } from "lucide-react";
 import { customAxios } from '../axios';
 import { api_url } from "../context/envar";
 import { ChannelContext } from "../context/channel";
+import { toast } from "react-toastify";
 
 type UserProps = {
   name: string;
@@ -77,15 +78,32 @@ function UserLine({ name, status, role, profileImage }: UserProps) {
     setShowModal(false);
   }
 
-  const handleTimeout = (event: React.MouseEvent) => {
+  const timeout = async () => {
+    try {
+      const reason = (document.getElementById('motif') as HTMLInputElement)?.value;
+      const time = (document.getElementById('timer') as HTMLInputElement)?.value;
+      console.log(reason, time);
+      const response: any = await customAxios.post(url + '/groupe/' + currentChannel + '/timeout', { user: name, time: time, reason: reason});
+      if (!response.data) return;
+    }
+    catch (error) {
+      console.error(error);
+      toast.error("Error timing out user");
+    }
+  }
+
+  const handleTimeout = (event: React.MouseEvent, ) => {
     event.stopPropagation();
     // Ici, vous pouvez ajouter la logique pour mettre l'utilisateur en "Time Out"
+
+    timeout();
+
     handleCloseModal(event);
   }
 
   return (
     <div onClick={handleOpenModal} className="flex items-center hover:bg-violet-400 rounded-2xl p-3 my-1 mx-2 transition-colors duration-200">
-      <img src={profileImage} className="mr-2 w-10 h-10 border-2 border-black rounded" />
+      <img src={profileImage} className="mr-2 w-10 h-10 border-2 border-black rounded" alt="N/A"/>
       <div className="flex justify-between w-full">
         <div className="flex ">
           <h2 className="text-black mr-2">{name} </h2>
@@ -101,6 +119,16 @@ function UserLine({ name, status, role, profileImage }: UserProps) {
             <h2 className="text-lg font-medium mb-2">User Info</h2>
             <p>Name: {name}</p>
             <p>Status: {status}</p>
+            <p>
+              <label>Motif : 
+                <input required type="text" id="motif" name="motif" className="rounded-lg border-2 border-black-100"/>(s)
+              </label>
+            </p>
+            <p>
+              <label>Durée : 
+                <input type="number" id="timer" name="timer" min="10" className="rounded-lg border-2 border-black-100"/>(s)
+              </label>
+            </p>
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
               onClick={handleCloseModal}
