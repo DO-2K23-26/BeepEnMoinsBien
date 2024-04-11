@@ -29,7 +29,7 @@ function UserListChatBox() {
   return (
     <div className="h-screen flex flex-col top-0 left-0 w-80 bg-violet-300 h-full border-r justify-between">
       <div className="flex flex-col h-full">
-        <div className="flex  h-14 ">
+        <div className="flex items-center justify-center h-14 border-b border-black">
           <div>Utilisateur</div>
         </div>
         <UserLine
