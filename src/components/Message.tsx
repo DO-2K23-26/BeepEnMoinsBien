@@ -1,10 +1,10 @@
 import { PencilLine } from "lucide-react";
 import { Trash2Icon } from "lucide-react";
-import { useContext, useEffect, useRef, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { UserContext } from "../context/authcontext";
 import { SocketContext } from "../context/socketcontext";
+import markdoc from '@markdoc/markdoc';
 
 interface MessageProps {
     message: string;
@@ -13,7 +13,6 @@ interface MessageProps {
 }
 
 function Message({ message, author, id }: Readonly<MessageProps>) {
-
     const socketContext = useContext(SocketContext);
     const socket = useRef(socketContext?.socketValue);
     const user = useContext(UserContext).user;
@@ -22,17 +21,28 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
     const [visible, setVisible] = useState(false);
     const [messageState, setMessageState] = useState(message);
 
-    //const for the edit button
     const handleClick = () => {
         setEditMode(!editMode);
     }
 
-    //const for the delete button
+    function preprocessMarkdown(text: string) {
+        // Échappe les blocs de code pour éviter de modifier les sauts de ligne à l'intérieur
+        const codeBlockRegex = /(```[\s\S]*?```)/g;
+        const parts = text.split(codeBlockRegex);
+        
+        for (let i = 0; i < parts.length; i++) {
+          // Traite seulement les parties qui ne sont pas des blocs de code
+          if (!parts[i].startsWith('```')) {
+            // Double les sauts de ligne pour assurer une séparation correcte des paragraphes
+            parts[i] = parts[i].replace(/\n/g, '\n\n');
+          }
+        }
+      
+        return parts.join('');
+    }
+
     const handleClickDelete = () => {
-        // delete here the message
-        const payload = {
-            id: id
-        };
+        const payload = { id: id };
         if (socket) {
             socket.current?.emit("delete", payload);
         }
@@ -42,19 +52,15 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
 
     const handleMouseEnter = () => setVisible(true);
     const handleMouseLeave = () => {
-        // setTimeout pour donner une petite latence avant de vérifier et cacher le bouton
-        // Cela permet de gérer les mouvements rapides de la souris entre le message et le bouton
         setTimeout(() => {
-            // Si le curseur n'est pas sur le message ou le bouton, on cache le bouton
             if (messageRef.current && !messageRef.current.contains(document.activeElement)) {
                 setVisible(false);
             }
-        }, 200); // la latence peut être ajustée selon les besoins
+        }, 200);
     };
 
     useEffect(() => {
         socket.current = socketContext?.socketValue;
-
         if (socket.current) {
             socket.current.on("edit", (msg: any) => {
                 if (msg.id !== id) return;
@@ -79,6 +85,14 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
         }
         setEditMode(false);
     }
+
+    // Convert markdown to Markdoc nodes
+    const adjustLineBreaks = preprocessMarkdown(messageState); 
+    const nodes = markdoc.parse(adjustLineBreaks);
+    // Transform nodes to a Markdoc AST
+    const ast = markdoc.transform(nodes);
+    // Render the AST to React elements
+    const renderedMessage = markdoc.renderers.react(ast, React, {});
 
     return (
         <>
@@ -109,7 +123,7 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
                             )}
                             {!editMode ?
                                 <div className="bg-blue-500 text-white rounded-lg py-2 px-4 break-words">
-                                    <ReactMarkdown>{messageState.replace(/\n/g, "  \n")}</ReactMarkdown>
+                                    {renderedMessage}
                                 </div>
                                 :
                                 <p className="bg-blue-500 text-black rounded-lg py-2 px-4">
@@ -131,7 +145,7 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
                     <div className="text-left">
                         <div className="text-xs text-gray-500 mb-1">{author}</div>
                         <div className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 break-words">
-                            <ReactMarkdown>{messageState.replace(/\n/g, "  \n")}</ReactMarkdown>
+                            {renderedMessage}
                         </div>
                     </div>
                 </div>
