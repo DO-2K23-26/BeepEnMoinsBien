@@ -140,7 +140,7 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
         <div className="mb-2 flex justify-start items-start">
           <div className="text-left">
             <div className="text-xs text-gray-500 mb-1">{author}</div>
-            <div className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 break-words">
+            <div className="bg-gray-200 text-gray-700 rounded-lg p-6 break-words md-messages">
               {renderedMessage}
             </div>
           </div>
