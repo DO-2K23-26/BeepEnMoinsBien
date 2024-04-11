@@ -103,7 +103,7 @@ function UserLine({ name, status, role, profileImage }: UserProps) {
 
   return (
     <div onClick={handleOpenModal} className="flex items-center hover:bg-violet-400 rounded-2xl p-3 my-1 mx-2 transition-colors duration-200">
-      <img src={profileImage} className="mr-2 w-10 h-10 border-2 border-black rounded" />
+      <img src={profileImage} className="mr-2 w-10 h-10 border-2 border-black rounded" alt="N/A"/>
       <div className="flex justify-between w-full">
         <div className="flex ">
           <h2 className="text-black mr-2">{name} </h2>
