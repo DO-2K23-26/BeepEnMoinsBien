@@ -38,7 +38,7 @@ function Channel(props: Readonly<{ id: string }>) {
           </span>
         </button>
       </div>
-      {showSettings && <SettingsComponent onClose={handleClose} />}
+      {showSettings && <SettingsComponent onClose={handleClose} id={props.id} />}
     </li>
   );
 }
