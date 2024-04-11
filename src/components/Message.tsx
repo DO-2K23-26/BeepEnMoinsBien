@@ -25,7 +25,21 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
         setEditMode(!editMode);
     }
 
-    const adjustLineBreaks = (input: string) => input.replace(/\n/g, '\n\n') 
+    function preprocessMarkdown(text: string) {
+        // Échappe les blocs de code pour éviter de modifier les sauts de ligne à l'intérieur
+        const codeBlockRegex = /(```[\s\S]*?```)/g;
+        const parts = text.split(codeBlockRegex);
+        
+        for (let i = 0; i < parts.length; i++) {
+          // Traite seulement les parties qui ne sont pas des blocs de code
+          if (!parts[i].startsWith('```')) {
+            // Double les sauts de ligne pour assurer une séparation correcte des paragraphes
+            parts[i] = parts[i].replace(/\n/g, '\n\n');
+          }
+        }
+      
+        return parts.join('');
+    }
 
     const handleClickDelete = () => {
         const payload = { id: id };
@@ -73,7 +87,8 @@ function Message({ message, author, id }: Readonly<MessageProps>) {
     }
 
     // Convert markdown to Markdoc nodes
-    const nodes = markdoc.parse(adjustLineBreaks(messageState));
+    const adjustLineBreaks = preprocessMarkdown(messageState); 
+    const nodes = markdoc.parse(adjustLineBreaks);
     // Transform nodes to a Markdoc AST
     const ast = markdoc.transform(nodes);
     // Render the AST to React elements
